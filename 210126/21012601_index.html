@@ -1,0 +1,58 @@
+<!-- 21 01 26  / First -->
+<!-- react는 기본적으로 js 파일이므로 html에서 직접 작성할 경우 html 태그와 body 태그 안에 작성 -->
+
+<html>
+
+<head>
+    <!-- script 안에 작성할 react 코드는 라이브러리이므로 해당 라이브러리 사용을 위한 import -->
+    <!-- 실제 배포시에는 react.development > react.production -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div> <!-- 결과: <div id="root"><button>Like</button></div> -->
+    <script type="text/babel">
+        // <script src="like-button.js">
+        // web-pack의 기능 : 쪼개진 js 파일을 html이 실행할 수 있는 js로 합쳐줌
+        // const e = React.createElement; >> 하단 return 부분에 html 태그를 사용하면 쓸 필요 없음
+        class LikeButton extends React.Component {
+            // react 내의 component를 사용하기 위한 상속
+            // constructor > component 실행 시, 가장 먼저 실행되는 부분
+            constructor(props) {
+                super(props);
+                this.state = {
+                    // 바뀔 여지가 있는 부분
+                    liked : false
+                };
+            }
+            render() {
+                // // tag를 생성하는 함수
+                // return e(
+                //     'button', 
+                //     { onClick: () => { this.setState({liked:true}) }, type: 'submit' },
+                //     this.state.liked === false ? 'Like' : 'Liked'); 
+                // // 형태 : 태그명, 속성, innerText
+                // // 결과: <button onClick: () => { console.log('clicked') }>Like</button>
+
+                // 위 형태가 보기 어려우므로 기존 html 태그를 사용할 수 있음
+                // 그러나 이 경우, babel이 꼭 필요하다 >> script import 후 script type 설정
+                // JSX (JS * XML)의 형태
+                // {} 중괄호 안에서 js 쓸 수 있음
+                return <button type="submit" onClick={() => this.setState({liked:true})}>
+                    {this.state.liked === true ? 'Liked' : 'Like'}
+                    </button>;
+            }
+        }
+            // script 안의 내용은 render에 있는 내용을 component로 만들겠다 라는 의미
+    </script>
+    <script type="text/babel">
+        // 선언해둔 LikeButton을 ReactDOM이 실제 구현 (렌더링) 하는 부분
+        // ReactDOM.render(e(LikeButton), document.querySelector('#root'));
+        // **** 컴포넌트의 장점 > 높은 코드 재사용성 ****
+        ReactDOM.render(<div><LikeButton /><LikeButton /><LikeButton /></div>, document.querySelector('#root'));
+    </script>
+</body>
+
+</html>

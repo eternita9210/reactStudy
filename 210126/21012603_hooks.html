@@ -1,0 +1,76 @@
+<!-- 21 01 26 Third -->
+<html>
+
+<head>
+    <title>구구단</title>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        // class GuGuDan extends React.Component {} > 클래스 컴포넌트
+        // ref와 setState 사용 가능
+        // 다만 함수형 컴포넌트를 써서 Hooks를 쓰는 편이 코드가 간결하고 setState도 쓸 수 있으므로
+        // 권장하는 편
+        // class 컴포넌트와의 다른 점은 state가 바뀔 때마다 전체 GuGuDan 함수가 새로 렌더링되므로
+        // class 보다는 느릴 수 있다
+        // 하지만 비동기이므로 set변수명 이 여러개라면 렌더링 한 번에 모아서 변경하니까 아래의
+        // setResult, setFirst 등을 할 때마다 렌더링 되는 게 아니라, 한 번의 렌더링에 setResult,
+        // setFirst, setSecond, setValue이 함게 변경된다.
+
+        const GuGuDan = () => {
+            // ref와 setState를 쓰지 않는 함수형 컴포넌트 Hooks
+            // 함수형에서 state를 쓸 수 있게 만드는 형태 (비구조화 할당 / 구조 분해 할당)
+            // const [변수명, set변수명] = React.useState(초기값);
+            // 이후 웹팩을 깔면, import React, { useState } from 'react'; 형태로 쓸 수 있음
+            // 단 이 형태는 컴포넌트 밖에 선언하면 사용할 수 없음
+            const [first, setFirst] = React.useState(Math.ceil(Math.random() * 9));
+            const [second, setSecond] = React.useState(Math.ceil(Math.random() * 9));
+            const [value, setValue] = React.useState('');
+            const [result, setResult] = React.useState('');
+            const inputRef = React.useRef(null); // DOM 에 접근
+
+            const onChangeInput = (e) => {
+                setValue(e.target.value);
+            }
+
+            const onSubmitForm = (e) => {
+                e.preventDefault();
+                if (parseInt(value) === first * second) {
+                    setResult(`정답: ${value}`);
+                    // setResult((prevResult) => {'정답: ' + prevResult})
+                    setFirst(Math.ceil(Math.random()*9));
+                    setSecond(Math.ceil(Math.random()*9));
+                    setValue('');
+                } else {
+                    setResult('땡');
+                    setValue('');
+                }
+                inputRef.current.focus(); // DOM 에 접근 (class와 달리 current 필요)
+            }
+
+            return (
+                <React.Fragment>
+                    <div>{first} 곱하기 {second} 는?</div>
+                    <form onSubmit={onSubmitForm}>
+                        <input ref={inputRef} type="number"
+                            value={value}
+                            onChange={onChangeInput} />
+                        <button>입력</button>
+                    </form>
+                    <div id="result">
+                        {result}
+                    </div>
+                </React.Fragment>
+            );
+        }
+    </script>
+    <script type="text/babel">
+        ReactDOM.render(<GuGuDan />, document.querySelector('#root'));
+    </script>
+</body>
+
+</html>
