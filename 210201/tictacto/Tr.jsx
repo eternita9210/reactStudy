@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { memo, useMemo } from 'react';
 import Td from './Td';
 
-const Tr = ({ rowData, rowIndex, dispatch }) => {
+const Tr = memo(({ rowData, rowIndex, dispatch }) => {
     return (
-        <tr className="table" dispatch={dispatch}>
-            {Array(rowData.length).fill().map((td, i) => 
-                <Td key={"td" + i} rowIndex={rowIndex} cellIndex={i}/>)}
+        <tr className="table">
+            {Array(rowData.length).fill().map((td, i) =>
+                <Td key={"td" + i} rowIndex={rowIndex} cellIndex={i}
+                    cellData={rowData[i]} dispatch={dispatch} />)}
         </tr>
     );
-}
+});
 
 export default Tr;
