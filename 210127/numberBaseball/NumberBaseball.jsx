@@ -42,6 +42,26 @@ class NumberBaseball extends Component {
         // 바꿔줘야 함
     };
 
+    onChangeInput = (e) => {
+        this.setState({
+            value: e.target.value,
+        })
+    };
+
+    // fruits = [
+    //     { fruit: '사과', taste: '달다' },
+    //     { fruit: '포도', taste: '새콤하다' },
+    //     { fruit: '바나나', taste: '달콤하다' },
+    //     { fruit: '배', taste: '아삭하다' },
+    //     { fruit: '귤', taste: '상큼하다' },
+    //     { fruit: '망고', taste: '달다' },
+    // ];
+
+    // hooks에서 사용하는 것과 동일한 형태
+    inputRef = createRef();
+    // onInputRef = (c) => { this.inputRef = c; };
+    // 함수형은 함수 안에 다른 조건을 추가할 수 있으므로 자유도 높음
+
     onSubmitForm = (e) => {
         const { value, answer, tries } = this.state;
         e.preventDefault();
@@ -100,26 +120,6 @@ class NumberBaseball extends Component {
     //  this.state  > this 사용 불가
     // };
     // 이런 형태의 함수에서 this를 쓰려면 위 내용 처럼 constructor에서 바인드해줘야만 함
-
-    onChangeInput = (e) => {
-        this.setState({
-            value: e.target.value,
-        })
-    };
-
-    // fruits = [
-    //     { fruit: '사과', taste: '달다' },
-    //     { fruit: '포도', taste: '새콤하다' },
-    //     { fruit: '바나나', taste: '달콤하다' },
-    //     { fruit: '배', taste: '아삭하다' },
-    //     { fruit: '귤', taste: '상큼하다' },
-    //     { fruit: '망고', taste: '달다' },
-    // ];
-
-    // hooks에서 사용하는 것과 동일한 형태
-    inputRef = createRef();
-    // onInputRef = (c) => { this.inputRef = c; };
-    // 함수형은 함수 안에 다른 조건을 추가할 수 있으므로 자유도 높음
 
     render() {
         const { result, value, tries } = this.state; // 비구조화 할당
