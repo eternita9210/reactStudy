@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, memo } from 'react';
+import React, { useCallback, useContext, memo, useMemo } from 'react';
 import { CODE, OPEN_CELL, CLICK_MINE, FLAG_CELL, QUESTION_CELL, NORMALIZE_CELL, TableContext } from './Minesweeper';
 
 const getTdStyle = (code) => {
@@ -45,7 +45,7 @@ const getTdText = (code) => {
         case CODE.QUESTION_MINE:
             return '?';
         default:
-            return '';
+            return code || '';
     }
 };
 
@@ -92,11 +92,27 @@ const Td = memo(({ rowIndex, cellIndex }) => {
                 return;
         }
     }, [tableData[rowIndex][cellIndex], halted]);
-    return (
-        <td style={getTdStyle(tableData[rowIndex][cellIndex])}
+    // return useMemo(() => ( // Context API를 사용하면 실제 렌더링이 안되더라도 한 번씩은 화면 깜빡임
+    //     // 따라서 캐싱을 위해 useMemo 사용
+    //     <td style={getTdStyle(tableData[rowIndex][cellIndex])}
+    //         onClick={onClickTd}
+    //         onContextMenu={onRightClickTd}>
+    //         {getTdText(tableData[rowIndex][cellIndex])}
+    //     </td>
+    // ), [tableData[rowIndex][cellIndex]]);
+
+
+    return <RealTd onClickTd={onClickTd} onRightClickTd={onRightClickTd} data={tableData[rowIndex][cellIndex]}/>
+});
+
+// useMemo를 쓰기 싫다면 컴포넌트를 분리해서 사용 가능
+const RealTd = memo(({ onClickTd, onRightClickTd, data }) => {
+    return ( // Context API를 사용하면 실제 렌더링이 안되더라도 한 번씩은 화면 깜빡임
+        // 따라서 캐싱을 위해 useMemo 사용
+        <td style={getTdStyle(data)}
             onClick={onClickTd}
             onContextMenu={onRightClickTd}>
-            {getTdText(tableData[rowIndex][cellIndex])}
+            {getTdText(data)}
         </td>
     );
 });
