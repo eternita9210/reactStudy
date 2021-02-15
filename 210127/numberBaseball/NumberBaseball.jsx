@@ -127,7 +127,7 @@ class NumberBaseball extends Component {
             <>
                 <h1>{result}</h1>
                 <form onSubmit={this.onSubmitForm}>
-                    <input ref={inputRef} maxLength={4} value={value}
+                    <input ref={this.inputRef} maxLength={4} value={value}
                         onChange={this.onChangeInput} />
                 </form>
                 <div>시도: {tries.length}</div>
